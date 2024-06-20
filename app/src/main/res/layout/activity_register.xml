@@ -20,12 +20,62 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
+        android:id="@+id/etFirstName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="First Name"
+        android:inputType="textPersonName"
+        app:layout_constraintTop_toBottomOf="@id/tvRegisterTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"/>
+
+    <TextView
+        android:id="@+id/tvFirstNameError"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_red_light"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/etFirstName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"/>
+
+    <EditText
+        android:id="@+id/etLastName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Last Name"
+        android:inputType="textPersonName"
+        app:layout_constraintTop_toBottomOf="@id/tvFirstNameError"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"/>
+
+    <TextView
+        android:id="@+id/tvLastNameError"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_red_light"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/etLastName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"/>
+
+    <EditText
         android:id="@+id/etEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Email"
         android:inputType="textEmailAddress"
-        app:layout_constraintTop_toBottomOf="@id/tvRegisterTitle"
+        app:layout_constraintTop_toBottomOf="@id/tvLastNameError"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"
@@ -45,37 +95,12 @@
         android:layout_marginEnd="32dp"/>
 
     <EditText
-        android:id="@+id/etName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Name"
-        android:inputType="textPersonName"
-        app:layout_constraintTop_toBottomOf="@id/tvEmailError"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"/>
-
-    <TextView
-        android:id="@+id/tvNameError"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/holo_red_light"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/etName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"/>
-
-    <EditText
         android:id="@+id/etPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Password"
         android:inputType="textPassword"
-        app:layout_constraintTop_toBottomOf="@id/tvNameError"
+        app:layout_constraintTop_toBottomOf="@id/tvEmailError"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"
@@ -133,11 +158,26 @@
         android:layout_marginEnd="32dp"/>
 
     <Button
+        android:id="@+id/btnSelectImage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="#FFDA91"
+        android:text="Select Profile Image"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvPasswordCriteria" />
+
+    <Button
         android:id="@+id/btnRegister"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="156dp"
+        android:layout_marginTop="84dp"
         android:layout_marginEnd="32dp"
         android:backgroundTint="@android:color/holo_orange_light"
         android:text="Create Account"
@@ -145,7 +185,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvPasswordCriteria" />
+        app:layout_constraintTop_toBottomOf="@id/btnSelectImage" />
 
     <TextView
         android:id="@+id/tvLoginLink"

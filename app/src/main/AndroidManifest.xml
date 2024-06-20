@@ -33,7 +33,7 @@
 
         <activity android:name=".LoginActivity" android:exported="true" />
         <activity android:name=".MainActivity" android:exported="true" />
-        <activity android:name=".ScanActivity" android:exported="true" />
+
 
     </application>
 

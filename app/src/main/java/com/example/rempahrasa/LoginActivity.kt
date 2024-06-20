@@ -2,6 +2,8 @@ package com.example.rempahrasa
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -37,6 +39,10 @@ class LoginActivity : AppCompatActivity() {
                 tvEmailError.text = "Email is required"
                 tvEmailError.visibility = TextView.VISIBLE
                 valid = false
+            } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                tvEmailError.text = "Invalid email format"
+                tvEmailError.visibility = TextView.VISIBLE
+                valid = false
             } else {
                 tvEmailError.visibility = TextView.GONE
             }
@@ -50,8 +56,7 @@ class LoginActivity : AppCompatActivity() {
             }
 
             if (valid) {
-                // Proceed with login (e.g., API call)
-
+                hideKeyboard()
                 loginUser(email, password)
             }
         }
@@ -62,24 +67,45 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun loginUser(email: String, password: String) {
-        val loginRequest = LoginRequest(email, password)
+    private fun hideKeyboard() {
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+    }
 
+    private fun loginUser(email: String, password: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            val response: Response<LoginResponse> = RetrofitInstance.api.login(loginRequest)
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful && response.body() != null) {
-                    val loginResponse = response.body()
-                    if (loginResponse?.success == true) {
-                        Toast.makeText(this@LoginActivity, "Login successful!", Toast.LENGTH_LONG).show()
-                        // Optionally save token and navigate to another screen
+            try {
+                val response: Response<LoginResponse> = RetrofitInstance.api.login(email, password)
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful && response.body() != null) {
+                        val loginResponse = response.body()
+                        Log.d("LoginActivity", "Response: $loginResponse")
+                        if (loginResponse?.data?.accessToken != null) {
+                            // Save token to SharedPreferences
+                            val sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
+                            val editor = sharedPreferences.edit()
+                            editor.putString("token", loginResponse.data.accessToken)
+                            editor.apply()
+
+                            Toast.makeText(this@LoginActivity, "Login successful!", Toast.LENGTH_LONG).show()
+                            val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            Toast.makeText(this@LoginActivity, "Login failed: Invalid credentials", Toast.LENGTH_LONG).show()
+                        }
                     } else {
-                        Toast.makeText(this@LoginActivity, loginResponse?.message ?: "Login failed", Toast.LENGTH_LONG).show()
+                        Log.e("LoginActivity", "Response error: ${response.errorBody()?.string()}")
+                        Toast.makeText(this@LoginActivity, "Error: ${response.message()}", Toast.LENGTH_LONG).show()
                     }
-                } else {
-                    Toast.makeText(this@LoginActivity, "Error: ${response.message()}", Toast.LENGTH_LONG).show()
+                }
+            } catch (e: Exception) {
+                Log.e("LoginActivity", "Login failed", e)
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@LoginActivity, "Login failed: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }
         }
     }
+
 }

@@ -1,31 +1,30 @@
 package com.example.rempahrasa
 
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 object RetrofitInstance {
 
-    private const val BASE_URL = ""
-
-    private val logging = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
+    private val loggingInterceptor = HttpLoggingInterceptor().apply {
+        setLevel(HttpLoggingInterceptor.Level.BODY)
     }
 
     private val client = OkHttpClient.Builder()
-        .addInterceptor(logging)
+        .connectTimeout(30, TimeUnit.SECONDS)
+        .readTimeout(30, TimeUnit.SECONDS)
+        .writeTimeout(30, TimeUnit.SECONDS)
+        .addInterceptor(loggingInterceptor)
         .build()
 
-    private val retrofit by lazy {
+    val api: ApiService by lazy {
         Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl("https://rempahrasa-ysnx44p2bq-an.a.run.app") // Ensure this is the correct base URL
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-    }
-
-    val api: ApiService by lazy {
-        retrofit.create(ApiService::class.java)
+            .create(ApiService::class.java)
     }
 }
