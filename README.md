@@ -9,9 +9,10 @@ RempahRasa is an Android application designed to classify spices using images ca
 - **History Tracking**: View the history of previously classified spices.
 - **Favorites**: Mark spices as favorites and view them in a dedicated section.
 
-## API Documentation
+## API & Documentation
 
 For detailed API documentation, please refer to [RempahRasa API Documentation](https://documenter.getpostman.com/view/35228443/2sA3Qy6pDx#5cbe18a8-586d-4118-9e3a-2c0bf6303480).
+*Please contact us for the BaseURL.
 
 ## Installation
 
@@ -27,9 +28,10 @@ For detailed API documentation, please refer to [RempahRasa API Documentation](h
     git clone https://github.com/yourusername/rempahrasa.git
     ```
 2. **Open the project in Android Studio.**
-3. **Build the project:**
+3. **Add the BaseURL***
+5. **Build the project:**
     - Let Android Studio download and install the required dependencies.
-4. **Run the project:**
+6. **Run the project:**
     - Connect your Android device or start an emulator.
     - Click on the "Run" button in Android Studio.
 
