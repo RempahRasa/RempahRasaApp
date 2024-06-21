@@ -69,8 +69,10 @@ data class HistoriesResponse(
 
 data class HistoryItem(
     val id: String,
-    val spice: String,
-    val date: String
+    val result: String,
+    val image: String,
+    val createdAt: String,
+    val favorite: Boolean
 )
 
 data class FavoritesResponse(
@@ -80,7 +82,10 @@ data class FavoritesResponse(
 
 data class FavoriteItem(
     val id: String,
-    val spice: String
+    val result: String,
+    val image: String,
+    val createdAt: String,
+    val favorite: Boolean
 )
 
 interface ApiService {
@@ -104,38 +109,38 @@ interface ApiService {
 
     // Resend verification token
     @FormUrlEncoded
-    @PUT("resend-token")
+    @PUT("/resend-token")
     suspend fun resendToken(
         @Field("email") email: String
     ): Response<RegisterResponse>
 
     // Verify user
-    @GET("verification")
+    @GET("/verification")
     suspend fun verifyUser(
         @Query("token") token: String
     ): Response<RegisterResponse>
 
     // Logout user
-    @DELETE("logout")
+    @DELETE("/logout")
     suspend fun logout(
         @Header("Authorization") token: String
     ): Response<RegisterResponse>
 
     // Get user profile
-    @GET("get-profile")
+    @GET("/get-profile")
     suspend fun getProfile(
         @Header("Authorization") token: String
     ): Response<ProfileResponse>
 
     // Get user histories
-    @GET("get-histories")
+    @GET("/histories")
     suspend fun getHistories(
         @Header("Authorization") token: String
     ): Response<HistoriesResponse>
 
     // Save favorite spice
     @FormUrlEncoded
-    @PUT("save-favorite")
+    @PUT("/favorites")
     suspend fun saveFavorite(
         @Header("Authorization") token: String,
         @Field("spiceId") spiceId: String
@@ -143,28 +148,28 @@ interface ApiService {
 
     // Remove favorite spice
     @FormUrlEncoded
-    @DELETE("remove-favorite")
+    @DELETE("/favorites")
     suspend fun removeFavorite(
         @Header("Authorization") token: String,
         @Field("spiceId") spiceId: String
     ): Response<FavoritesResponse>
 
     // Get favorite spices
-    @GET("get-favorites")
+    @GET("/favorites")
     suspend fun getFavorites(
         @Header("Authorization") token: String
     ): Response<FavoritesResponse>
 
     // Classify spice image
     @Multipart
-    @POST("spice-classification")
+    @POST("/spice-classification")
     suspend fun classifySpice(
         @Part image: MultipartBody.Part
     ): Response<ClassificationResponse>
 
     // Classify spice's recipe
     @Multipart
-    @POST("recipe-classification")
+    @POST("/recipe-classification")
     suspend fun classifyRecipe(
         @Part image: MultipartBody.Part
     ): Response<RecipeClassificationResponse>

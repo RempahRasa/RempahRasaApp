@@ -21,7 +21,7 @@ object RetrofitInstance {
 
     val api: ApiService by lazy {
         Retrofit.Builder()
-            .baseUrl("https://rempahrasa-ysnx44p2bq-an.a.run.app") // Ensure this is the correct base URL
+            .baseUrl("") // Ensure this is the correct base URL
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

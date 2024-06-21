@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -28,14 +27,11 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
-import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.FileOutputStream
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class ScanFragment : Fragment() {
-
     private var _binding: FragmentScanBinding? = null
     private val binding get() = _binding!!
     private val REQUEST_IMAGE_PICK = 2
@@ -64,7 +60,7 @@ class ScanFragment : Fragment() {
         }
 
         binding.ivClose.setOnClickListener {
-            requireActivity().onBackPressed()
+            closeFragment()
         }
 
         if (allPermissionsGranted()) {
@@ -72,6 +68,12 @@ class ScanFragment : Fragment() {
         } else {
             requestPermissions(REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
         }
+    }
+
+    private fun closeFragment() {
+        parentFragmentManager.beginTransaction()
+            .remove(this)
+            .commit()
     }
 
     private fun dispatchPickPictureIntent() {
@@ -129,7 +131,7 @@ class ScanFragment : Fragment() {
                     val classificationResponse = response.body()
                     if (classificationResponse?.success == true) {
                         Toast.makeText(requireContext(), "Classification successful!", Toast.LENGTH_LONG).show()
-                        val intent = Intent(requireContext(), ResultsActivity::class.java).apply {
+                        val intent = Intent(requireContext(), ResultActivity::class.java).apply {
                             putExtra("spiceName", classificationResponse.spices.firstOrNull())
                             putStringArrayListExtra("recipes", ArrayList(classificationResponse.recipes))
                             putExtra("spiceImageRes", R.drawable.ic_launcher_background)

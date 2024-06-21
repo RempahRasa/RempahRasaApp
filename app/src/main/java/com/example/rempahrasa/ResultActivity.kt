@@ -1,48 +1,49 @@
 package com.example.rempahrasa
 
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.example.rempahrasa.databinding.ActivityResultsBinding
 
-class ResultsActivity : AppCompatActivity() {
+class ResultActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityResultsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_results)
+        binding = ActivityResultsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val ivSpiceImage = findViewById<ImageView>(R.id.ivSpiceImage)
-        val tvSpiceName = findViewById<TextView>(R.id.tvSpiceName)
-        val tvSpiceDescription = findViewById<TextView>(R.id.tvSpiceDescription)
-        val ivFavorite = findViewById<ImageView>(R.id.ivFavorite)
-        val llRecipes = findViewById<LinearLayout>(R.id.llRecipes)
-        val btnClose = findViewById<Button>(R.id.btnClose)
+        // Assume receive the classification result via intent
+        val spiceName = intent.getStringExtra("spiceName") ?: "Unknown Spice"
+        val spiceImageRes = intent.getIntExtra("spiceImageRes", 0)
+        val recipes = intent.getStringArrayListExtra("recipes") ?: arrayListOf()
 
+        binding.tvSpiceName.text = spiceName
 
-        val spiceName = intent.getStringExtra("spiceName")
-        val recipes = intent.getStringArrayListExtra("recipes")
-        val spiceImageRes = intent.getIntExtra("spiceImageRes", R.drawable.ic_launcher_background) // Replace with actual default image resource
-
-
-        tvSpiceName.text = spiceName
-        tvSpiceDescription.text = "Lorem ipsum" // Placeholder text, replace with actual description if available
-        ivSpiceImage.setImageResource(spiceImageRes)
-
-        recipes?.forEach { recipe ->
-            val textView = TextView(this)
-            textView.text = recipe
-            textView.textSize = 16f
-            llRecipes.addView(textView)
+        if (spiceImageRes != 0) {
+            binding.ivSpiceImage.setImageResource(spiceImageRes)
         }
 
-        ivFavorite.setOnClickListener {
-            // Handle favorite button click
+        // Display recipes
+        binding.llRecipes.removeAllViews()
+        recipes.forEach { recipe ->
+            val recipeTextView = TextView(this).apply {
+                text = recipe
+                textSize = 16f
+                setPadding(8, 8, 8, 8)
+            }
+            binding.llRecipes.addView(recipeTextView)
         }
 
-        btnClose.setOnClickListener {
+        binding.btnClose.setOnClickListener {
             finish()
+        }
+
+        // Set favorite button action
+        binding.ivFavorite.setOnClickListener {
+            // Implement favorite save functionality
         }
     }
 }
